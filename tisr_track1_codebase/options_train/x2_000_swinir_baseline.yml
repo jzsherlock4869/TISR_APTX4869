@@ -1,0 +1,118 @@
+# general settings
+name: x2_000_swinir_baseline
+model_type: MultiLossThermalModel
+scale: 2
+num_gpu: 1  # set num_gpu: 0 for cpu mode
+manual_seed: 42
+TTA: false
+
+# dataset and data loader settings
+datasets:
+  train:
+    name: ThermalX2Train
+    type: ThermalX2Dataset
+    dataroot_gt: "/home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/train/640_flir_hr"
+    dataroot_lq:  "/home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/train/320_axis_mr_ecc_aligned"
+    io_backend:
+      type: disk
+
+    gt_size: 128
+    use_flip: true
+    use_rot: true
+
+    # data loader
+    use_shuffle: true
+    num_worker_per_gpu: 8
+    batch_size_per_gpu: 8
+    dataset_enlarge_ratio: 1
+    prefetch_mode: ~
+
+  val:
+    name: ThermalX2Valid
+    type: ThermalX2Dataset
+    dataroot_gt: "/home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/validation/640_flir_hr"
+    dataroot_lq:  "/home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/validation/320_axis_mr_ecc_aligned"
+    io_backend:
+      type: disk
+
+# network structures
+network_g:
+  type: SwinIR
+  upscale: 2
+  in_chans: 3
+  img_size: 48
+  window_size: 8
+  img_range: 1.
+  depths: [6, 6, 6, 6, 6, 6]
+  embed_dim: 180
+  num_heads: [6, 6, 6, 6, 6, 6]
+  mlp_ratio: 2
+  upsampler: 'pixelshuffle'
+  resi_connection: '1conv'
+
+
+# path
+path:
+  pretrain_network_g: /home/jzsherlock/my_lab/datasets/secret_base/tisr23/tisr_tk1/pretrained/001_classicalSR_DIV2K_s48w8_SwinIR-M_x2.pth
+  strict_load_g: true
+  # resume_state: ~
+
+# training settings
+train:
+  ema_decay: 0.9
+  optim_g:
+    type: Adam
+    lr: !!float 1e-4
+    weight_decay: !!float 1e-6
+    betas: [0.9, 0.999]
+
+  scheduler:
+    type: MultiStepLR
+    milestones: [10000, 20000]
+    gamma: 0.1
+
+  total_iter: 50000
+  warmup_iter: -1  # no warm up
+
+  # losses
+  l1_opt:
+    type: MyHingeLoss
+    loss_weight: 1.0
+    reduction: mean
+    thr: 0.05
+
+  l2_opt:
+    type: SSIMLoss
+    loss_weight: 0.5
+
+# validation settings
+val:
+  val_freq: 1000
+  save_img: true
+
+  metrics:
+    psnr: # metric name, can be arbitrary
+      type: calculate_psnr
+      crop_border: 20
+      test_y_channel: false
+    ssim:
+      type: calculate_ssim
+      crop_border: 20
+      test_y_channel: false
+    # niqe:
+    #   type: calculate_niqe
+    #   crop_border: 4
+
+# logging settings
+logger:
+  print_freq: 20
+  save_checkpoint_freq: 1000
+  use_tb_logger: true
+  wandb:
+    project: ~
+    resume_id: ~
+
+# dist training settings
+dist_params:
+  backend: nccl
+  port: 29500
