@@ -11,7 +11,7 @@ datasets:
   test:
     name: ThermalX2Test
     type: SingleImageDataset
-    dataroot_lq: /home/jzsherlock/my_lab/datasets/TISR23/tk1/testingSetInput/evaluation2/mr_real
+    dataroot_lq: /data/datasets/TISR23/tk1/testingSetInput/evaluation2/mr_real
     io_backend:
       type: disk
 
