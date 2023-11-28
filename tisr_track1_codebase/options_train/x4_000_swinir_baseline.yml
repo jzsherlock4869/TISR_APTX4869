@@ -11,7 +11,7 @@ datasets:
   train:
     name: ThermalX4Train
     type: ThermalX4Dataset
-    dataroot_gt: /home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/train/640_flir_hr
+    dataroot_gt: /data/datasets/TISR23/tk1/challengedataset/train/640_flir_hr
     io_backend:
       type: disk
 
@@ -31,7 +31,7 @@ datasets:
   val:
     name: ThermalX4Valid
     type: ThermalX4Dataset
-    dataroot_gt: /home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/validation/640_flir_hr
+    dataroot_gt: /data/datasets/TISR23/tk1/challengedataset/validation/640_flir_hr
     io_backend:
       type: disk
 
@@ -53,7 +53,7 @@ network_g:
 
 # path
 path:
-  pretrain_network_g: /home/jzsherlock/my_lab/datasets/secret_base/tisr23/tisr_tk1/pretrained/001_classicalSR_DIV2K_s48w8_SwinIR-M_x4.pth
+  pretrain_network_g: /data/pretrained/tisr23/tisr_tk1/001_classicalSR_DIV2K_s48w8_SwinIR-M_x4.pth
   strict_load_g: true
   # resume_state: ~
 
