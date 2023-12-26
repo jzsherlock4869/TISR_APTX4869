@@ -8,11 +8,11 @@ from tqdm import tqdm
 from utils_align import eccAlign
 
 # ============= 2023 settings ============== #
-# lq_dir = "/home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/train/320_axis_mr"
-# hr_dir = "/home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/train/640_flir_hr"
+# lq_dir = "/home/datasets/TISR23/tk1/challengedataset/train/320_axis_mr"
+# hr_dir = "/home/datasets/TISR23/tk1/challengedataset/train/640_flir_hr"
 
-lq_dir = "/home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/validation/320_axis_mr"
-hr_dir = "/home/jzsherlock/my_lab/datasets/TISR23/tk1/challengedataset/validation/640_flir_hr"
+lq_dir = "/home/datasets/TISR23/tk1/challengedataset/validation/320_axis_mr"
+hr_dir = "/home/datasets/TISR23/tk1/challengedataset/validation/640_flir_hr"
 
 
 postfix = 'ecc_aligned'
